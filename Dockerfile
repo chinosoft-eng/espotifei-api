@@ -1,5 +1,5 @@
-FROM python:3.8.3-slim
-WORKDIR WORKDIR /usr/src/app
+FROM python:3.11.13-slim
+WORKDIR /usr/src/app
 RUN echo "Copiando aplicacion"
 RUN mkdir app
 RUN mkdir app/administracion_de_contenido
@@ -19,7 +19,7 @@ COPY migrations migrations/
 COPY entrypoint.py .
 COPY requerimientos.txt .
 
-RUN chmod 777 app/entry-docker.sh
+RUN chmod 777 ./app/entry-docker.sh
 RUN echo "Instalando software"
 RUN apt-get update
 RUN apt-get -y upgrade
@@ -38,4 +38,4 @@ ENV CONVERTIDOR_ARCHIVOS_PORT=5002
 RUN echo $APP_SETTINGS_MODULE
 EXPOSE 5000
 EXPOSE 5001
-ENTRYPOINT ["app/entry-docker.sh"]
+ENTRYPOINT ["sh", "/usr/src/app/app/entry-docker.sh"]
