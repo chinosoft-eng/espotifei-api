@@ -22,8 +22,7 @@ COPY requerimientos.txt .
 RUN chmod 777 ./app/entry-docker.sh
 RUN echo "Instalando software"
 RUN apt-get update
-RUN apt-get -y upgrade
-RUN apt-get install -y python3-pip libpq-dev ffmpeg
+RUN apt-get install -y python3-pip libpq-dev ffmpeg build-essential python3-dev g++
 
 RUN pip3 install -r ./requerimientos.txt
 RUN python3 -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. app/manejo_de_archivos/protos/ManejadorDeArchivos.proto
