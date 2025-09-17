@@ -1,12 +1,13 @@
 flask>=2.2.0
 flask_sqlalchemy>=3.0.0
+flask-cors>=6.0.1
 flask_restful>=0.3.9
 flask-migrate>=4.0.0
 wheel>=0.38.0
 psycopg2-binary>=2.9.0
 PyJWT===2.8.0
 phonenumbers>=8.12.50
-pymongo>=4.3.0
+pymongo>=4.4.0
 grpcio-tools>=1.51.1
 eyeD3>=0.9.7
 pydub>=0.25.1

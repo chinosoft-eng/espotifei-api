@@ -2,4 +2,4 @@ from .default import *
 
 SECRET_KEY = 'putyoursecretkeyhere'
 APP_ENV = APP_ENV_PRODUCTION
-SQLALCHEMY_DATABASE_URI = "postgresql://espotifei_user:password@psql_db:5432/espotifei_db"
+SQLALCHEMY_DATABASE_URI = "postgresql://espotifei_user:password@psql_db:5432/espotifei"

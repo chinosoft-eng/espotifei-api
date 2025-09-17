@@ -5,4 +5,4 @@ from .default import *
 TESTING = True
 DEBUG = True
 APP_ENV = APP_ENV_TESTING
-SQLALCHEMY_DATABASE_URI = "postgresql://username:password@host:5432/databse"
+SQLALCHEMY_DATABASE_URI = "postgresql://espotifei_user:password@host:5432/espotifei"

@@ -3,9 +3,9 @@ version: '3'
 services:
   psql_db:
     environment:
-      POSTGRES_USER: PON_UN_USUARIO
-      POSTGRES_PASSWORD: PON_UNA_CONTRASENA
-      POSTGRES_DB: PON_UNA_BD
+      POSTGRES_USER: espotifei_user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: espotifei
     image: postgres:latest
     ports:
       - "5432:5432"
@@ -34,8 +34,8 @@ services:
       - convertidor_archivos
       - mongo_db
     ports:
-    - "5000:5010"
-    - "5001:5011"
+    - "5000:5000"
+    - "5001:5001"
     volumes:
     - ./app:/usr/src/app/app
     - ./migrations:/usr/src/app/migrations
