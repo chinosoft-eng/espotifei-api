@@ -3,6 +3,7 @@ from concurrent import futures
 import signal
 import grpc
 from flask import Flask
+from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import logging
@@ -12,22 +13,29 @@ migrate = Migrate()
 
 
 def create_app(settings_module="config.dev", puerto=5001, direccion_convertidor="127.0.0.1", puerto_convertidor=5002,
-               ip_servidor_mongo="127.0.0.1", iniciar_grcp_server=False):
+               ip_servidor_mongo="127.0.0.1", iniciar_grcp_server=True):
     app = Flask(__name__)
     app.config.from_object(settings_module)
     configure_logging(app)
     base_de_datos.init_app(app)
     migrate.init_app(app, base_de_datos)
+
     from app.manejo_de_usuarios import manejo_de_usuarios
     app.register_blueprint(manejo_de_usuarios)
+
     from app.administracion_de_contenido import administracion_de_contenido
     app.register_blueprint(administracion_de_contenido)
+
     if iniciar_grcp_server:
         servidor = crear_servidor_archivos(puerto, direccion_convertidor, puerto_convertidor, ip_servidor_mongo)
         signal.signal(signal.SIGINT, servidor.stop)
+
     register_error_handlers(app)
+    CORS(app)
+
     with app.app_context():
         base_de_datos.create_all()
+
     return app
 
 def crear_servidor_archivos(puerto, direccion_convertidor, puerto_convertidor, ip_servidor_mongo):
@@ -126,3 +134,7 @@ class ServidorManejadorDeArchivos:
         """
         self.server.stop(ServidorManejadorDeArchivos.TIEMPO_ESPERA_CERRAR)
         self.logger.info("Se ha cerrado el servidor GRCP")
+
+if __name__ == '__main__':
+    app = create_app()
+    app.run(debug=True)

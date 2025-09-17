@@ -10,7 +10,7 @@ from app.util.validaciones.modelos.ValidacionGenero import ValidacionGenero
 
 class CreadorDeContenidoControlador(Resource):
 
-    def __init__(self):
+    def _init_parser(self):
         self.parser = reqparse.RequestParser()
         self.parser.add_argument('nombre')
         self.parser.add_argument('biografia')
@@ -41,6 +41,7 @@ class CreadorDeContenidoControlador(Resource):
         :return: Una lista de errores de los errores en la solictud o un diccionario con los datos del creador de
         contenido registrado
         """
+        self._init_parser()
         creador_de_contenido_a_registrar = CreadorDeContenido(nombre=self.argumentos['nombre'],
                                                               biografia=self.argumentos['biografia'],
                                                               es_grupo=self.argumentos['es_grupo'],
@@ -68,6 +69,7 @@ class CreadorDeContenidoControlador(Resource):
         :return: Un JSON con la informacion del objeto editada y un codigo de respuesta 202 o un JSON con una lista de
          errores y un codigo de respuesta 400
         """
+        self._init_parser()
         error_creador_no_registrado = ValidacionCreadorDeContenido. \
             validar_usuario_no_tiene_creador_de_contenido_asociado(usuario_actual)
         if error_creador_no_registrado is not None:
@@ -94,7 +96,7 @@ class CreadorDeContenidoControlador(Resource):
 
 class CreadorDeContenidoGenerosControlador(Resource):
 
-    def __init__(self):
+    def _init_parser(self):
         self.parser = reqparse.RequestParser()
         self.parser.add_argument('id')
         self.argumentos = self.parser.parse_args()
@@ -107,6 +109,7 @@ class CreadorDeContenidoGenerosControlador(Resource):
         :param usuario_actual: El usuario logeado
         :return: El genero agregado
         """
+        self._init_parser()
         error_creador_no_registrado = ValidacionCreadorDeContenido. \
             validar_usuario_no_tiene_creador_de_contenido_asociado(usuario_actual)
         if error_creador_no_registrado is not None:

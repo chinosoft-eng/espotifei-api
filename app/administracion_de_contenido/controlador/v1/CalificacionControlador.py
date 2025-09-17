@@ -8,7 +8,7 @@ from app.util.validaciones.modelos.ValidacionCancion import ValidacionCancion
 
 class CancionCalificacionControlador(Resource):
 
-    def __init__(self):
+    def _init_parser(self):
         self.parser = reqparse.RequestParser()
         self.parser.add_argument('calificacion_estrellas')
         self.argumentos = self.parser.parse_args()
@@ -37,6 +37,7 @@ class CancionCalificacionControlador(Resource):
         :param id_cancion: La cancion a calificar
         :return: Un diccionario y un codigo de estado
         """
+        self._init_parser()
         error_no_existe_cancion = ValidacionCancion.validar_existe_cancion(id_cancion)
         if error_no_existe_cancion is not None:
             return error_no_existe_cancion, 404
@@ -73,6 +74,7 @@ class CancionCalificacionControlador(Resource):
         :param id_cancion: El id de la cancion a editar la calificacion
         :return: Un diccionario y un codigo de estado
         """
+        self._init_parser()
         error_no_existe_cancion = ValidacionCancion.validar_existe_cancion(id_cancion)
         if error_no_existe_cancion is not None:
             return error_no_existe_cancion, 404

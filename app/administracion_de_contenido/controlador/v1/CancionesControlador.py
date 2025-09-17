@@ -11,11 +11,11 @@ from app.util.validaciones.modelos.ValidacionCancion import ValidacionCancion
 from app.util.validaciones.modelos.ValidacionCreadorDeContenido import ValidacionCreadorDeContenido
 from app.util.validaciones.modelos.ValidacionGenero import ValidacionGenero
 
-settings_module = os.getenv('APP_SETTINGS_MODULE')
+settings_module = os.getenv('APP_SETTINGS_MODULE', 'config.dev')
 
 class CreadorDeContenidoAlbumCanciones(Resource):
 
-    def __init__(self):
+    def _init_parser(self):
         self.parser = reqparse.RequestParser()
         self.parser.add_argument('nombre')
         self.argumentos = self.parser.parse_args()
@@ -56,6 +56,7 @@ class CreadorDeContenidoAlbumCanciones(Resource):
         :param id_album: El album en donde se va a registrar la cancion
         :return: Un diccionario y un codigo de error
         """
+        self._init_parser()
         error_creador_no_registrado = ValidacionCreadorDeContenido. \
             validar_usuario_no_tiene_creador_de_contenido_asociado(usuario_actual)
         if error_creador_no_registrado is not None:
@@ -79,7 +80,7 @@ class CreadorDeContenidoAlbumCanciones(Resource):
 
 class CreadorDeContenidoAlbumCancion(Resource):
 
-    def __init__(self):
+    def _init_parser(self):
         self.parser = reqparse.RequestParser()
         self.parser.add_argument('nombre')
         self.argumentos = self.parser.parse_args()
@@ -141,6 +142,7 @@ class CreadorDeContenidoAlbumCancion(Resource):
         :param id_cancion: El id de la cancion a editar
         :return: Un diccionario y un codigo de estado
         """
+        self._init_parser()
         error_permisos = CreadorDeContenidoAlbumCancion. \
             validaciones_de_acceso_y_existencia(usuario_actual, id_album, id_cancion)
         if error_permisos is not None:
@@ -180,7 +182,7 @@ class CreadorDeContenidoAlbumCancion(Resource):
 
 class CreadorDeContenidoAlbumCancionGeneros(Resource):
 
-    def __init__(self):
+    def _init_parser(self):
         self.parser = reqparse.RequestParser()
         self.parser.add_argument('id')
         self.argumentos = self.parser.parse_args()
@@ -195,6 +197,7 @@ class CreadorDeContenidoAlbumCancionGeneros(Resource):
         :param id_cancion: El id de la cancion a la cual se le agregara el genero
         :return: Un diccionario y un codigo de estado
         """
+        self._init_parser()
         errores_permiso = CreadorDeContenidoAlbumCancion. \
             validaciones_de_acceso_y_existencia(usuario_actual, id_album, id_cancion)
         if errores_permiso is not None:
@@ -282,7 +285,7 @@ class CreadoresDeContenidoAlbumesCanciones(Resource):
 
 class CreadorDeContenidoAlbumesCancionCreadoresDeContenidoControlador(Resource):
 
-    def __init__(self):
+    def _init_parser(self):
         self.parser = reqparse.RequestParser()
         self.parser.add_argument('id')
         self.argumentos = self.parser.parse_args()
@@ -297,6 +300,7 @@ class CreadorDeContenidoAlbumesCancionCreadoresDeContenidoControlador(Resource):
         :param id_cancion: El id de la cancion a la que se le agregara el creador de contenido
         :return: Un diccionario y un codigo de estado
         """
+        self._init_parser()
         errores_permiso = CreadorDeContenidoAlbumCancion. \
             validaciones_de_acceso_y_existencia(usuario_actual, id_album, id_cancion)
         if errores_permiso is not None:

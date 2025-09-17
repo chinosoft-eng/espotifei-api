@@ -8,11 +8,11 @@ from app.administracion_de_contenido.modelo.modelos import CancionPersonal
 from app.manejo_de_usuarios.controlador.v1.LoginControlador import token_requerido
 from app.util.validaciones.modelos.ValidacionCancionPersonal import ValidacionCancionPersonal
 
-settings_module = os.getenv('APP_SETTINGS_MODULE')
+settings_module = os.getenv('APP_SETTINGS_MODULE', 'config.dev')
 
 class BibliotecaPersonalCanciones(Resource):
 
-    def __init__(self):
+    def _init_parser(self):
         self.parser = reqparse.RequestParser()
         self.parser.add_argument('nombre')
         self.parser.add_argument('album')
@@ -26,6 +26,7 @@ class BibliotecaPersonalCanciones(Resource):
         :param usuario_actual: El usuario que se encuentra logeado
         :return: Un diccionario y un codigo de estado
         """
+        self._init_parser()
         cancion_a_registrar = CancionPersonal(nombre=self.argumentos['nombre'], artistas=self.argumentos['artistas'],
                                               album=self.argumentos['album'], id_usuario=usuario_actual.id_usuario)
         errores_validacion_registro = ValidacionCancionPersonal.validar_registro_cancion_personal(cancion_a_registrar)

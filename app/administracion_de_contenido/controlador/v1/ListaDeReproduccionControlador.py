@@ -8,7 +8,7 @@ from app.util.validaciones.modelos.ValidacionListaDeReproduccion import Validaci
 
 class ListasDeReproduccionControlador(Resource):
 
-    def __init__(self):
+    def _init_parser(self):
         self.parser = reqparse.RequestParser()
         self.parser.add_argument('nombre')
         self.parser.add_argument('descripcion')
@@ -35,6 +35,8 @@ class ListasDeReproduccionControlador(Resource):
         :param usuario_actual: El usuario al cual se le registrara la lista de reproduccion
         :return: Un diccionario y un codigo de estado
         """
+        self._init_parser()
+
         lista_de_reproduccion = ListaDeReproduccion(nombre=self.argumentos['nombre'],
                                                     descripcion=self.argumentos['descripcion'])
         errores_validacion = ValidacionListaDeReproduccion.validar_registro_lista_de_reproduccion(lista_de_reproduccion)
@@ -47,7 +49,7 @@ class ListasDeReproduccionControlador(Resource):
 
 class ListaDeReproduccionControlador(Resource):
 
-    def __init__(self):
+    def _init_parser(self):
         self.parser = reqparse.RequestParser()
         self.parser.add_argument('nombre')
         self.parser.add_argument('descripcion')
@@ -91,6 +93,8 @@ class ListaDeReproduccionControlador(Resource):
         :param id_lista_de_reproduccion: El id de la lista de reproduccion a editar
         :return: Un diccionario y un codigo de estado
         """
+        self._init_parser()
+
         validaciones_permisos = ListaDeReproduccionControlador. \
             validaciones_existencia_de_lista_y_permisos(usuario_actual, id_lista_de_reproduccion)
         if validaciones_permisos is not None:
@@ -124,13 +128,15 @@ class ListaDeReproduccionControlador(Resource):
 
 class ListaDeReproduccionCanciones(Resource):
 
-    def __init__(self):
+    def _init_parser(self):
         self.parser = reqparse.RequestParser()
         self.parser.add_argument('id')
         self.argumentos = self.parser.parse_args()
 
     @token_requerido
     def post(self, usuario_actual, id_lista_de_reproduccion):
+        self._init_parser()
+
         error_no_existe_lista_reproduccion = ValidacionListaDeReproduccion. \
             validar_no_existe_lista_de_reproduccion(id_lista_de_reproduccion)
         if error_no_existe_lista_reproduccion is not None:

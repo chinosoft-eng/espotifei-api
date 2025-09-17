@@ -7,7 +7,7 @@ from app import create_app
 from app.administracion_de_contenido.modelo.modelos import HistorialCancion, Cancion
 from app.manejo_de_usuarios.controlador.v1.LoginControlador import token_requerido
 
-settings_module = os.getenv('APP_SETTINGS_MODULE')
+settings_module = os.getenv('APP_SETTINGS_MODULE', 'config.dev')
 
 class HistorialCancionControlador(Resource):
 

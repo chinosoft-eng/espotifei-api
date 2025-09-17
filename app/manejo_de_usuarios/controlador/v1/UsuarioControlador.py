@@ -8,7 +8,7 @@ from app.util.validaciones.modelos.ValidacionUsuario import ValidacionUsuario
 
 class UsuarioControlador(Resource):
 
-    def __init__(self):
+    def _init_parser(self):
         self.parser = reqparse.RequestParser()
         self.parser.add_argument('nombre_usuario')
         self.parser.add_argument('nombre')
@@ -32,6 +32,8 @@ class UsuarioControlador(Resource):
         :return: Un diccionario con la informacioón del Usuario registrado o una lista de diccionarios con los errores
         surgidos
         """
+        self._init_parser()
+
         usuario_a_registrar = Usuario(nombre_usuario=self.argumentos['nombre_usuario'],
                                       nombre=self.argumentos['nombre'], contrasena=self.argumentos['contrasena'],
                                       tipo_usuario=self.argumentos['tipo_usuario'],
@@ -50,6 +52,8 @@ class UsuarioControlador(Resource):
         :param usuario_actual: El usuario logeado
         :return: La información del usuario modificada o una lista de errores sucedidos
         """
+        self._init_parser()
+
         if usuario_actual.nombre_usuario == self.argumentos['nombre_usuario']:
             self.argumentos['nombre_usuario'] = None
         if usuario_actual.correo_electronico == self.argumentos['correo_electronico']:

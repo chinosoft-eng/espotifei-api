@@ -2,7 +2,7 @@
 import os
 
 from app import create_app
-settings_module = os.getenv('APP_SETTINGS_MODULE')
+settings_module = os.getenv('APP_SETTINGS_MODULE', 'config.dev')
 port_grpc = os.getenv('GRPC_PORT')
 ip_mongod_server = os.getenv('MONGO_IP')
 ip_convertidor_archivos = os.getenv('CONVERTIDOR_ARCHIVOS_IP')

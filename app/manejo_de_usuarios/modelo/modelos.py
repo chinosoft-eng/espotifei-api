@@ -14,7 +14,7 @@ class Usuario(base_de_datos.Model):
     id_usuario = base_de_datos.Column(base_de_datos.Integer, primary_key=True)
     nombre_usuario = base_de_datos.Column(base_de_datos.String(20), unique=True, index=True)
     nombre = base_de_datos.Column(base_de_datos.String(70), nullable=False)
-    contrasena = base_de_datos.Column(base_de_datos.String(80), nullable=False)
+    contrasena = base_de_datos.Column(base_de_datos.String(500), nullable=False)
     tipo_usuario = base_de_datos.Column(base_de_datos.Integer, nullable=False)
     correo_electronico = base_de_datos.Column(base_de_datos.String(100), nullable=False, unique=True)
 
@@ -23,7 +23,7 @@ class Usuario(base_de_datos.Model):
         Guarda la informacion del objeto en la base de datos
         :return: None
         """
-        self.contrasena = generate_password_hash(self.contrasena, method='sha256')
+        self.contrasena = generate_password_hash(self.contrasena)
         base_de_datos.session.add(self)
         base_de_datos.session.commit()
 
@@ -42,7 +42,7 @@ class Usuario(base_de_datos.Model):
         if nombre is not None:
             self.nombre = nombre
         if contrasena is not None:
-            contrasena_hasheada = generate_password_hash(contrasena, method='sha256')
+            contrasena_hasheada = generate_password_hash(contrasena)
             self.contrasena = contrasena_hasheada
         if correo_electronico is not None:
             self.correo_electronico = correo_electronico

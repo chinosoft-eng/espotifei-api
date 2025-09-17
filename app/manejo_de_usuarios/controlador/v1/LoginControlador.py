@@ -11,7 +11,7 @@ from app import create_app
 from app.manejo_de_usuarios.modelo.enum.enums import TipoUsuario
 from app.manejo_de_usuarios.modelo.modelos import Usuario
 
-settings_module = os.getenv('APP_SETTINGS_MODULE')
+settings_module = os.getenv('APP_SETTINGS_MODULE', 'config.dev')
 
 def obtener_secret_key():
     objeto_configuracion = import_string(settings_module)
@@ -35,7 +35,7 @@ def token_requerido(f):
             secret_key = obtener_secret_key()
             if secret_key is None:
                 return {}, 500
-            datos = jwt.decode(token, secret_key)
+            datos = jwt.decode(token, secret_key, algorithms=['HS256'])
             usuario_actual = Usuario.obtener_usuario_por_id(datos['id_usuario'])
         except:
             error = {'error': 'token_invalido',
@@ -88,7 +88,7 @@ class LoginControlador(Resource):
             return {}, 500
         token = jwt.encode({'id_usuario': usuario.id_usuario,
                             'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=60)}, secret_key)
-        return jsonify({'token': token.decode('UTF-8')})
+        return jsonify({'token': token})
 
     @staticmethod
     def token_requerido_grpc(token):

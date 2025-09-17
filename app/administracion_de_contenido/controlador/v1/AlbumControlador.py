@@ -8,7 +8,7 @@ from app.util.validaciones.modelos.ValidacionCreadorDeContenido import Validacio
 
 class CreadorDeContenidoAlbumes(Resource):
 
-    def __init__(self):
+    def _init_parser(self):
         self.parser = reqparse.RequestParser()
         self.parser.add_argument('nombre')
         self.parser.add_argument('anio_lanzamiento')
@@ -17,6 +17,7 @@ class CreadorDeContenidoAlbumes(Resource):
     @token_requerido
     @solo_creador_de_contenido
     def post(self, usuario_actual):
+        self._init_parser()
         error_no_existe_creador_cotenido = ValidacionCreadorDeContenido \
             .validar_creador_de_contenido_existe_a_partir_de_usuario(usuario_actual)
         if error_no_existe_creador_cotenido is not None:
@@ -48,7 +49,7 @@ class CreadorDeContenidoAlbumes(Resource):
 
 
 class CreadorDeContenidoAlbum(Resource):
-    def __init__(self):
+    def _init_parser(self):
         self.parser = reqparse.RequestParser()
         self.parser.add_argument('nombre')
         self.parser.add_argument('anio_lanzamiento')
@@ -91,6 +92,7 @@ class CreadorDeContenidoAlbum(Resource):
         """
         Se encarga de procesar a una solicitud PATCH al modificar la información de un Álbum
         """
+        self._init_parser()
         error_no_existe_album = ValidacionAlbum.validar_album_existe(id_album)
         if error_no_existe_album is not None:
             return error_no_existe_album, 404
