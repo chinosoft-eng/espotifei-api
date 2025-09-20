@@ -9,7 +9,7 @@ from sqlalchemy import desc
 from app import base_de_datos, create_app
 from app.util.JsonBool import JsonBool
 
-settings_module = os.getenv('APP_SETTINGS_MODULE')
+settings_module = os.getenv('APP_SETTINGS_MODULE', 'config.dev')
 artistas_generos = base_de_datos.Table('artistas_generos',
                                        base_de_datos.Column('id_creador_de_contenido', base_de_datos.Integer,
                                                             base_de_datos.ForeignKey(

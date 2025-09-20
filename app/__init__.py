@@ -13,7 +13,7 @@ migrate = Migrate()
 
 
 def create_app(settings_module="config.dev", puerto=5001, direccion_convertidor="127.0.0.1", puerto_convertidor=5002,
-               ip_servidor_mongo="127.0.0.1", iniciar_grcp_server=True):
+               ip_servidor_mongo="127.0.0.1", iniciar_grcp_server=False):
     app = Flask(__name__)
     app.config.from_object(settings_module)
     configure_logging(app)
@@ -38,11 +38,15 @@ def create_app(settings_module="config.dev", puerto=5001, direccion_convertidor=
 
     return app
 
+
 def crear_servidor_archivos(puerto, direccion_convertidor, puerto_convertidor, ip_servidor_mongo):
     servidor = ServidorManejadorDeArchivos(puerto, direccion_convertidor, puerto_convertidor, ip_servidor_mongo)
-    hilo_manejador_canciones = threading.Thread(target=servidor.iniciar)
-    hilo_manejador_canciones.start()
+    #hilo_manejador_canciones = threading.Thread(target=servidor.iniciar)
+
+    #hilo_manejador_canciones.start()
+    servidor.iniciar()
     return servidor
+
 
 def register_error_handlers(app):
     @app.errorhandler(500)
@@ -52,6 +56,7 @@ def register_error_handlers(app):
     @app.errorhandler(404)
     def error_404_handler(e):
         return {}, 404
+
 
 def configure_logging(app):
     del app.logger.handlers[:]
@@ -71,6 +76,7 @@ def configure_logging(app):
             log.addHandler(handler)
         log.propagate = False
         log.setLevel(logging.DEBUG)
+
 
 class ServidorManejadorDeArchivos:
     puerto = 5001
@@ -112,7 +118,7 @@ class ServidorManejadorDeArchivos:
         ManejadorDeArchivos_pb2_grpc.add_CancionesServicer_to_server(CancionesServicer(), self.server)
         ManejadorDeArchivos_pb2_grpc.add_PortadasServicer_to_server(PortadasServicer(), self.server)
         self.server.add_insecure_port('[::]:' + str(self.puerto))
-        self.server.add_insecure_port('0.0.0.0:' + str(self.puerto))
+        # self.server.add_insecure_port('0.0.0.0:' + str(self.puerto))
 
     def iniciar(self):
         """
@@ -134,7 +140,3 @@ class ServidorManejadorDeArchivos:
         """
         self.server.stop(ServidorManejadorDeArchivos.TIEMPO_ESPERA_CERRAR)
         self.logger.info("Se ha cerrado el servidor GRCP")
-
-if __name__ == '__main__':
-    app = create_app()
-    app.run(debug=True)

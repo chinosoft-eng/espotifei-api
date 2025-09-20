@@ -97,8 +97,8 @@ class LoginControlador(Resource):
             try:
                 with app.app_context():
                     secret_key = obtener_secret_key()
-                    datos = jwt.decode(token, secret_key)
+                    datos = jwt.decode(token, secret_key, algorithms=['HS256'])
                     usuario_actual = Usuario.obtener_usuario_por_id(datos['id_usuario'])
                     return usuario_actual
-            except Exception:
+            except Exception as e:
                 return None

@@ -69,12 +69,12 @@ class PortadasServicer(ManejadorDeArchivos_pb2_grpc.PortadasServicer):
                 if not se_reviso:
                     self.logger.info(context.peer() + ": Solicitud subir portada del creador de contenido "
                                      + str(id_elemento))
-                    validacion = ValidacionPortadasService.validar_subir_portada_creador_de_contenido(token,
-                                                                                                      context.peer())
+                    #validacion = ValidacionPortadasService.validar_subir_portada_creador_de_contenido(token,
+                    #                                                                                  context.peer())
                     se_reviso = True
-                    if validacion is not None:
-                        respuesta.error = validacion
-                        return respuesta
+                    #if validacion is not None:
+                    #    respuesta.error = validacion
+                    #    return respuesta
                 portada += request.data
             ManejadorDePortadas.guardar_portada_creador_de_contenido(portada, id_elemento, formato)
         except Exception as ex:

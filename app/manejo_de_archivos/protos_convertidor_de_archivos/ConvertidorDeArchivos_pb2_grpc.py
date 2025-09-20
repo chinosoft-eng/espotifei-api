@@ -5,7 +5,7 @@ import warnings
 
 from app.manejo_de_archivos.protos_convertidor_de_archivos import ConvertidorDeArchivos_pb2 as app_dot_manejo__de__archivos_dot_protos__convertidor__de__archivos_dot_ConvertidorDeArchivos__pb2
 
-GRPC_GENERATED_VERSION = '1.74.0'
+GRPC_GENERATED_VERSION = '1.75.0'
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
